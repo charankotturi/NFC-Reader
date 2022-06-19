@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.tabzero.jetpack.scanner.ScannerViewModel" />
+            type="com.tabzero.jetpack.ui.scanner.ScannerViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
