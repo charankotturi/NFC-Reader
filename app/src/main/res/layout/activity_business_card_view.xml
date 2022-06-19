@@ -11,7 +11,7 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="20dp"
-        tools:context=".BusinessCardViewActivity">
+        tools:context=".ui.viewer.BusinessCardViewActivity">
 
         <ImageView
             android:layout_width="match_parent"
@@ -24,16 +24,8 @@
             android:layout_height="match_parent"
             android:layout_margin="15dp">
 
-<!--            <ImageView-->
-<!--                android:layout_width="25dp"-->
-<!--                android:layout_height="25dp"-->
-<!--                android:src="@drawable/ic_share"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:tint="@color/white" />-->
-
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Charan Kotturi"
@@ -43,12 +35,12 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/textView4"
+                app:layout_constraintBottom_toTopOf="@+id/txtBusinessName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/txtBusinessName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tab Zero"
@@ -59,12 +51,12 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textView3"
-                app:layout_constraintStart_toStartOf="@+id/textView3"
+                app:layout_constraintEnd_toEndOf="@+id/txtName"
+                app:layout_constraintStart_toStartOf="@+id/txtName"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/llWebsite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -72,7 +64,7 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4">
+                app:layout_constraintTop_toBottomOf="@+id/txtBusinessName">
 
                 <ImageView
                     android:layout_width="25dp"
@@ -86,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
-                    android:id="@+id/textview5"
+                    android:id="@+id/txtWebsite"
                     android:textStyle="bold"
                     android:maxLines="1"
                     android:ellipsize="end"
@@ -104,7 +96,7 @@
                 android:gravity="center"
                 android:paddingBottom="45dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+                app:layout_constraintTop_toBottomOf="@+id/llWebsite">
 
                 <ImageView
                     android:layout_width="25dp"
@@ -119,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:id="@+id/textview6"
+                    android:id="@+id/txtPhoneNum"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:textColor="@color/white"

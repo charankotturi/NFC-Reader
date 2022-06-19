@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.tabzero.jetpack.databinding.ActivityMainBinding
-import com.tabzero.jetpack.scanner.ScanActivity
+import com.tabzero.jetpack.ui.scanner.ScanActivity
+import com.tabzero.jetpack.ui.writer.MyCardsActivity
 
 class MainActivity : AppCompatActivity() {
 

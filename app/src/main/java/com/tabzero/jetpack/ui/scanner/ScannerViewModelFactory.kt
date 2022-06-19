@@ -1,4 +1,4 @@
-package com.tabzero.jetpack.scanner
+package com.tabzero.jetpack.ui.scanner
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

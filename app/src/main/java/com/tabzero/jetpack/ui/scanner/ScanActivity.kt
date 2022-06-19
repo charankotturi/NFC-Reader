@@ -1,4 +1,4 @@
-package com.tabzero.jetpack.scanner
+package com.tabzero.jetpack.ui.scanner
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -12,12 +12,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.tabzero.jetpack.BusinessCardViewActivity
-import com.tabzero.jetpack.MyCardsActivity
+import com.tabzero.jetpack.ui.viewer.BusinessCardViewActivity
+import com.tabzero.jetpack.ui.writer.MyCardsActivity
 import com.tabzero.jetpack.R
 import com.tabzero.jetpack.databinding.ActivityScanBinding
 import java.nio.charset.Charset
@@ -26,7 +24,7 @@ import java.util.*
 
 const val TAG = "Asdfsdfsdf"
 
-class ScanActivity : AppCompatActivity() , NfcAdapter.CreateNdefMessageCallback{
+class ScanActivity : AppCompatActivity() {
     
     private var nfcAdapter: NfcAdapter? = null
     private var intentFiltersArray: Array<IntentFilter>? = null
@@ -76,8 +74,6 @@ class ScanActivity : AppCompatActivity() , NfcAdapter.CreateNdefMessageCallback{
                 NfcB::class.java.name
             ), arrayOf(IsoDep::class.java.name)
         )
-
-        nfcAdapter?.setNdefPushMessageCallback(this, this)
     }
 
     override fun onResume() {
@@ -120,25 +116,12 @@ class ScanActivity : AppCompatActivity() , NfcAdapter.CreateNdefMessageCallback{
 
         if (tag != null) {
             tag.techList.forEach {
-                Log.i(TAG, "onNewIntent: $it")
+                Log.i(TAG, "onNewIntent: Yay!")
             }
 
             val nfc = NfcA.get(tag)
 
-//            val atqa: ByteArray? = nfc.atqa
-//            val sak: Short? = nfc.sak
             try {
-//                nfc.connect()
-                val isConnected= nfc.isConnected()
-
-//                if(isConnected)
-//                {
-//                    val receivedData: ByteArray = nfc.transceive(byteArrayOf())
-//                    Log.i(TAG, "onNewIntent recieve?? : ${receivedData}")
-//                }
-//                else{
-//                    Log.e("ans", "Not connected")
-//                }
                 if (!viewModel.isReadingCard){
                     writeTag(tag, NdefMessage(
                         arrayOf(
@@ -146,7 +129,6 @@ class ScanActivity : AppCompatActivity() , NfcAdapter.CreateNdefMessageCallback{
                         )
                     ))
                 }
-
             }catch (e: Exception){
                 Toast.makeText(this@ScanActivity, "Something went wrong try again!", Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
@@ -204,28 +186,6 @@ class ScanActivity : AppCompatActivity() , NfcAdapter.CreateNdefMessageCallback{
                 e.printStackTrace()
             }
         }
-    }
-
-    private fun createTextRecord(payload: String, locale: Locale, encodeInUtf8: Boolean): NdefRecord {
-        val langBytes = locale.language.toByteArray(Charset.forName("US-ASCII"))
-        val utfEncoding = if (encodeInUtf8) Charset.forName("UTF-8") else Charset.forName("UTF-16")
-        val textBytes = payload.toByteArray(utfEncoding)
-        val utfBit: Int = if (encodeInUtf8) 0 else 1 shl 7
-        val status = (utfBit + langBytes.size).toChar()
-        val data = ByteArray(1 + langBytes.size + textBytes.size)
-        data[0] = status.toByte()
-        System.arraycopy(langBytes, 0, data, 1, langBytes.size)
-        System.arraycopy(textBytes, 0, data, 1 + langBytes.size, textBytes.size)
-        return NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, ByteArray(0), data)
-    }
-
-    override fun createNdefMessage(p0: NfcEvent?): NdefMessage {
-        val text = "Beam me up, Android!"
-        return NdefMessage(
-            arrayOf(
-                createMime("text/plain", text.toByteArray())
-            )
-        )
     }
 
 }

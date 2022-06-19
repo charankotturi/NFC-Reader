@@ -1,13 +1,14 @@
-package com.tabzero.jetpack
+package com.tabzero.jetpack.ui.writer
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.tabzero.jetpack.R
 import com.tabzero.jetpack.databinding.ActivityMyCardsBinding
 import com.tabzero.jetpack.resources.Utils
-import com.tabzero.jetpack.scanner.ScanActivity
+import com.tabzero.jetpack.ui.scanner.ScanActivity
 
 class MyCardsActivity : AppCompatActivity() {
 

@@ -19,14 +19,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jetpack" >
         <activity
-            android:name=".BusinessCardViewActivity"
+            android:name=".ui.viewer.BusinessCardViewActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/Theme.MaterialComponents.BottomSheetDialog" >
         </activity>
 
         <activity
-            android:name=".scanner.ScanActivity"
+            android:name="com.tabzero.jetpack.ui.scanner.ScanActivity"
             android:exported="true"
             android:launchMode="singleTop" >
             <intent-filter>
@@ -50,7 +50,7 @@
         </activity>
 
         <activity
-            android:name=".MyCardsActivity"
+            android:name=".ui.writer.MyCardsActivity"
             android:exported="true"
             android:launchMode="singleTop" >
         </activity>

@@ -1,4 +1,4 @@
-package com.tabzero.jetpack.scanner
+package com.tabzero.jetpack.ui.scanner
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,9 +18,6 @@ class ScannerViewModel(
     init {
         getBusinessModel(data)
     }
-
-    fun getTitleScan(): String =
-        if (isReader) "Reading" else "Editing"
 
     private fun getBusinessModel(data: String) : BusinessModel {
         if (data == ""){
