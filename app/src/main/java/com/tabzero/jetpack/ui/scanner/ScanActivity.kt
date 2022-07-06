@@ -8,17 +8,17 @@ import android.content.IntentFilter
 import android.nfc.*
 import android.nfc.NdefRecord.createMime
 import android.nfc.tech.*
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import com.tabzero.jetpack.ui.viewer.BusinessCardViewActivity
-import com.tabzero.jetpack.ui.writer.MyCardsActivity
 import com.tabzero.jetpack.R
 import com.tabzero.jetpack.databinding.ActivityScanBinding
-import java.nio.charset.Charset
+import com.tabzero.jetpack.ui.viewer.BusinessCardViewActivity
+import com.tabzero.jetpack.ui.writer.MyCardsActivity
 import java.util.*
 
 
@@ -65,9 +65,19 @@ class ScanActivity : AppCompatActivity() {
             println("NFC Adapter ready ...")
         }
 
-        pendingIntent = PendingIntent.getActivity(
-            this, 0, Intent(this, this.javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0
-        )
+        pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(
+                this, 0, Intent(this, this.javaClass)
+                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            PendingIntent.getActivity(
+                this, 0, Intent(this, this.javaClass)
+                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0
+            )
+        }
+
+
         intentFiltersArray = arrayOf(IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED))
         techListsArray = arrayOf(
             arrayOf(NfcA::class.java.name), arrayOf(

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signin_nav"
+    app:startDestination="@id/phoneNumber">
+
+    <fragment
+        android:id="@+id/phoneNumber"
+        android:name="com.tabzero.jetpack.ui.onboarding.PhoneNumber"
+        android:label="fragment_phone_number"
+        tools:layout="@layout/fragment_phone_number" >
+        <action
+            android:id="@+id/action_phoneNumber_to_otp"
+            app:destination="@id/otp" />
+    </fragment>
+    <fragment
+        android:id="@+id/otp"
+        android:name="com.tabzero.jetpack.ui.onboarding.Otp"
+        android:label="fragment_otp"
+        tools:layout="@layout/fragment_otp" >
+        <action
+            android:id="@+id/action_otp_to_userName"
+            app:destination="@id/userName" />
+    </fragment>
+    <fragment
+        android:id="@+id/userName"
+        android:name="com.tabzero.jetpack.ui.onboarding.UserName"
+        android:label="fragment_user_name"
+        tools:layout="@layout/fragment_user_name" />
+</navigation>

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.tabzero.jetpack.databinding.ActivityMainBinding
+import com.tabzero.jetpack.ui.history.HistoryActivity
 import com.tabzero.jetpack.ui.scanner.ScanActivity
 import com.tabzero.jetpack.ui.writer.MyCardsActivity
 
@@ -36,7 +37,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnHistory.setOnClickListener {
-            Toast.makeText(this, "Coming soon!", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, HistoryActivity::class.java)
+            startActivity(intent)
         }
     }
 }

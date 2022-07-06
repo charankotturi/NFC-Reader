@@ -19,7 +19,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="25dp"
             android:textSize="30sp"
-            android:text="53th"
+            android:text="53rd"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

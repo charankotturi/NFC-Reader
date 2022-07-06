@@ -9,7 +9,8 @@ class ScannerViewModelFactory(
     private val data: String,
     private val edit: Boolean
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ScannerViewModel::class.java)){
             return ScannerViewModel(isReader = isReader, data = data, edit = edit) as T
         }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tabzero.jetpack" >
+    package="com.tabzero.jetpack">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,18 +17,29 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Jetpack" >
+        android:theme="@style/Theme.Jetpack">
+
+        <activity
+            android:name=".ui.onboarding.SignInActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.history.HistoryActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.viewer.BusinessCardViewActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.MaterialComponents.BottomSheetDialog" >
-        </activity>
-
+            android:theme="@style/Theme.MaterialComponents.BottomSheetDialog" />
         <activity
-            android:name="com.tabzero.jetpack.ui.scanner.ScanActivity"
+            android:name=".ui.scanner.ScanActivity"
             android:exported="true"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
@@ -52,19 +63,11 @@
         <activity
             android:name=".ui.writer.MyCardsActivity"
             android:exported="true"
-            android:launchMode="singleTop" >
-        </activity>
-
+            android:launchMode="singleTop" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTask"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:launchMode="singleTask">
         </activity>
     </application>
 
