@@ -42,7 +42,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#0003DAC5"
+                        android:id="@+id/etPhoneNumber"
                         android:inputType="number"
+                        android:maxLength="10"
                         android:theme="@style/Widget.Material3.TextInputEditText.FilledBox" />
 
                 </com.google.android.material.textfield.TextInputLayout>
