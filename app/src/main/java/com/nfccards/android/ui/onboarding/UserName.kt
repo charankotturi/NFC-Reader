@@ -39,6 +39,8 @@ class UserName : Fragment() {
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_name, container, false)
 
+        getUser((activity as SignInActivity).getSignInViewModel().phoneNumber)
+
         binding.btnSend.setOnClickListener {
             if (binding.etUserName.text.toString().length < 5){
                 Toast.makeText(requireActivity(), "username should contain at least 5 words!", Toast.LENGTH_SHORT).show()
@@ -64,7 +66,7 @@ class UserName : Fragment() {
                     .addOnSuccessListener { _ ->
                         userData.value = Resource.Success(data = User(
                             phoneNum = phoneNum,
-                            username = binding.etUserName.text.toString()
+                            username = binding.etUserName.text.toString(),
                         ))
 
                         startActivity(Intent(activity, MainActivity::class.java))
@@ -105,7 +107,7 @@ class UserName : Fragment() {
         return binding.root
     }
 
-    fun getUser(docId: String){
+    private fun getUser(docId: String){
         userData.value = Resource.Loading()
         val db = Firebase.firestore
 
@@ -117,6 +119,7 @@ class UserName : Fragment() {
                     userData.value = Resource.Success(data = User(
                         phoneNum = result.data?.get("phoneNum") as String,
                         username = result.data?.get("username") as String,
+                        activeCardId = (result.data?.get("activeCardId") ?: "" ) as String
                     ))
                     userExits = true
                 }

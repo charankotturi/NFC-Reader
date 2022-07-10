@@ -19,7 +19,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="25dp"
             android:textSize="30sp"
-            android:text="53rd"
+            android:text="Card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +27,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Card"
+            android:text="Share"
             android:textSize="50sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView"
@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintBottom_toTopOf="@+id/btnMyPhone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2">
@@ -53,6 +53,29 @@
                 app:lottie_speed="0.4" />
 
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btnMyPhone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_my_phone_card"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="@+id/relativeLayout"
+            app:layout_constraintStart_toStartOf="@+id/relativeLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginVertical="15dp"
+                android:text="My Phone Cards"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -89,7 +112,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Edit\nBusiness Card"
+                        android:text="Edit\nNfc Card"
                         android:layout_gravity="center"
                         android:textColor="@color/white"
                         android:textSize="16sp"
@@ -117,7 +140,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Read\nBusiness Card"
+                        android:text="Read\nNfc/Mobile Card"
                         android:layout_gravity="center"
                         android:textSize="16sp"
                         android:textColor="@color/white"
@@ -154,7 +177,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Write\nBusiness Card"
+                        android:text="Write\nNfc Card"
                         android:layout_gravity="center"
                         android:textColor="@color/white"
                         android:textSize="16sp"

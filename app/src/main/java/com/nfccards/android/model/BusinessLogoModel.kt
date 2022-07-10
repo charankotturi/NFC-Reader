@@ -13,5 +13,5 @@ data class BusinessLogoModel (
     val position: String,
     val logoUrl: String,
     val userPhoneNumber: String,
-    override val type: CardType
+    override val type: CardType = CardType.BUSINESS_LOGO
 ) : CardTypeInterface

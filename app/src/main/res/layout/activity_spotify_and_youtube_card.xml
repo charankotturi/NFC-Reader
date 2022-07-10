@@ -9,10 +9,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
+        android:gravity="center_horizontal"
         android:layout_marginHorizontal="30dp"
-        >
+        tools:context=".ui.viewer.SpotifyAndYoutubeCardActivity">
 
         <TextView
             android:id="@+id/textView"
@@ -28,41 +29,26 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Card"
             android:textSize="50sp"
+            android:gravity="start"
             android:layout_marginBottom="25dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <include
-            android:id="@+id/cardLogo"
-            layout="@layout/card_business_logo"
+            android:id="@+id/cardSingleLink"
+            layout="@layout/card_spotify"
             />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:id="@+id/etWebLink"
-            android:hint="website link"
-            />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="Phone Number"
-            android:id="@+id/etPhoneNumber"
-            />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="logo url"
+            android:hint="url"
             android:id="@+id/etLogoUrl"
             />
 
@@ -85,5 +71,4 @@
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
-
 </layout>

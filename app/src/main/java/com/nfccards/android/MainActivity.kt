@@ -13,6 +13,7 @@ import com.nfccards.android.databinding.ActivityMainBinding
 import com.nfccards.android.model.User
 import com.nfccards.android.ui.history.HistoryActivity
 import com.nfccards.android.ui.onboarding.SignInActivity
+import com.nfccards.android.ui.phone_cards.PhoneActivity
 import com.nfccards.android.ui.scanner.ScanActivity
 import com.nfccards.android.ui.writer.MyCardsActivity
 
@@ -43,6 +44,10 @@ class MainActivity : AppCompatActivity() {
             auth.signOut()
             startActivity(Intent(this, SignInActivity::class.java))
             finish()
+        }
+
+        binding.btnMyPhone.setOnClickListener {
+            startActivity(Intent(this, PhoneActivity::class.java))
         }
 
         binding.btnRead.setOnClickListener {

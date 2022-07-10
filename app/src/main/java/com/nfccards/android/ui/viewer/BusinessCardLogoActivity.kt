@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -30,7 +31,6 @@ class BusinessCardLogoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_business_card_logo)
-        val cardBinding: CardBusinessLogoBinding = CardBusinessLogoBinding.bind(binding.root)
 
         var data = intent.getStringExtra("data")
         if (data == null) {
@@ -38,18 +38,25 @@ class BusinessCardLogoActivity : AppCompatActivity() {
         }
         val model = Utils.getBusinessLogoModel(data)
 
+        binding.cardLogo.txtBusinessName.setText(model.business)
+        binding.cardLogo.txtName.setText(model.name)
+        binding.cardLogo.txtPosition.setText(model.position)
+        binding.etPhoneNumber.setText(model.phoneNum)
+        binding.etWebLink.setText(model.webSite)
+        binding.etLogoUrl.setText(model.logoUrl)
+
         if (intent.getBooleanExtra("isReader", true)){
             binding.btnSubmit.visibility = View.GONE
             binding.etLogoUrl.visibility = View.GONE
             binding.etWebLink.visibility = View.GONE
             binding.etPhoneNumber.visibility = View.GONE
 
-            cardBinding.txtBusinessName.isEnabled = false
-            cardBinding.txtName.isEnabled = false
-            cardBinding.txtPosition.isEnabled = false
+            binding.cardLogo.txtBusinessName.isEnabled = false
+            binding.cardLogo.txtName.isEnabled = false
+            binding.cardLogo.txtPosition.isEnabled = false
 
             // To open website from the business card
-            cardBinding.llWebsite.setOnClickListener {
+            binding.cardLogo.llWebsite.setOnClickListener {
                 try {
                     val myIntent = Intent(Intent.ACTION_VIEW, Uri.parse(model.webSite))
                     startActivity(myIntent)
@@ -62,7 +69,7 @@ class BusinessCardLogoActivity : AppCompatActivity() {
             }
 
             // To open phone app from the business card
-            cardBinding.llPhoneNumber.setOnClickListener {
+            binding.cardLogo.llPhoneNumber.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DIAL)
                 intent.data = Uri.parse("tel:${model.phoneNum}")
                 startActivity(intent)
@@ -70,9 +77,9 @@ class BusinessCardLogoActivity : AppCompatActivity() {
         }
 
         binding.btnSubmit.setOnClickListener {
-            val name = cardBinding.txtName.text.toString()
-            val businessName = cardBinding.txtBusinessName.text.toString()
-            val position = cardBinding.txtPosition.text.toString()
+            val name = binding.cardLogo.txtName.text.toString()
+            val businessName = binding.cardLogo.txtBusinessName.text.toString()
+            val position = binding.cardLogo.txtPosition.text.toString()
             val webLink = binding.etWebLink.text.toString()
             val phoneNumber = binding.etPhoneNumber.text.toString()
             val logoUrl = binding.etLogoUrl.text.toString()

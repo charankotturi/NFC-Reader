@@ -12,6 +12,7 @@ import android.nfc.tech.*
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -24,7 +25,10 @@ import com.nfccards.android.model.BusinessModel
 import com.nfccards.android.resources.CardType
 import com.nfccards.android.ui.viewer.BusinessCardViewActivity
 import com.nfccards.android.ui.writer.MyCardsActivity
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 const val TAG = "Asdfsdfsdf"
@@ -134,13 +138,15 @@ class ScanActivity : AppCompatActivity() {
                 Log.i(TAG, "onNewIntent: Yay${it}!")
             }
 
+            val data = viewModel.viewData + ",${tag.id}"
+
             try {
                 IsoDep.get(tag).hiLayerResponse.size
 
                 if (!viewModel.isReadingCard){
                     writeTag(tag, NdefMessage(
                         arrayOf(
-                            createMime("text/plain", viewModel.viewData.toByteArray())
+                            createMime("text/plain", data.toByteArray())
                         )
                     ))
                 }
@@ -202,9 +208,9 @@ class ScanActivity : AppCompatActivity() {
                             newIntent.putExtra("data", "${model.name},${model.business},${model.phoneNum},${model.webSite}")
                             startActivity(newIntent)
                         }
-                        CardType.BUSINESS_LOGO -> {}
+                        CardType.BUSINESS_LOGO -> {
+                        }
                         CardType.BUSINESS_BACKGROUND -> {
-
                         }
                     }
                 } else{

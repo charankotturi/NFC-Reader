@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class User(
     val phoneNum: String,
     val username: String,
-    override val type: CardType
-) : CardTypeInterface
+    val activeCardId: String? = ""
+)

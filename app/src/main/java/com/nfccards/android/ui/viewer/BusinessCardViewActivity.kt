@@ -1,6 +1,7 @@
 package com.nfccards.android.ui.viewer
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,7 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.nfccards.android.R
 import com.nfccards.android.databinding.ActivityBusinessCardViewBinding
+import com.nfccards.android.model.BusinessModel
 import com.nfccards.android.resources.Utils
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class BusinessCardViewActivity : AppCompatActivity() {
 
@@ -24,6 +29,25 @@ class BusinessCardViewActivity : AppCompatActivity() {
             data = ""
         }
         val model = Utils.getBusinessModel(data)
+
+        var list = ArrayList<BusinessModel>()
+        val sharedPref = this.getSharedPreferences("DB_NAME" , Context.MODE_PRIVATE) ?: return
+        val scannedCards: String = sharedPref.getString("Scanned_Cards", "")!!
+        val historyCardsList = Json.decodeFromString<List<BusinessModel>>(string = scannedCards)
+        list = historyCardsList as ArrayList<BusinessModel>
+        var exits = false
+        historyCardsList.forEach {
+            if (it.id == model.id){
+                exits = true
+            }
+        }
+
+        if (!exits){
+            list.add(model)
+            val edit = sharedPref.edit()
+            edit.putString(Json.encodeToString<List<BusinessModel>>(list), "")
+            edit.commit()
+        }
 
         binding.txtName.text = model.name
         binding.txtBusinessName.text = model.business

@@ -1,5 +1,6 @@
 package com.nfccards.android.resources
 
+import com.google.gson.Gson
 import com.nfccards.android.model.BusinessLogoModel
 import com.nfccards.android.model.BusinessModel
 import kotlinx.serialization.decodeFromString
@@ -21,13 +22,14 @@ class Utils {
                 name = dataArray[0],
                 business = dataArray[1],
                 phoneNum = dataArray[2],
-                webSite = dataArray[3]
+                webSite = dataArray[3],
+                id = dataArray[4]
             )
             return model
         }
 
         fun getBusinessLogoModel(data: String) : BusinessLogoModel {
-            return Json.decodeFromString(data)
+            return Gson().fromJson(data, BusinessLogoModel::class.java)
         }
     }
 }

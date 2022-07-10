@@ -30,7 +30,7 @@ class HistoryCard : RecyclerView.Adapter<HistoryCard.ViewHolder>(){
 
     private val diffUtilsCallBack = object: DiffUtil.ItemCallback<BusinessModel>(){
         override fun areItemsTheSame(oldItem: BusinessModel, newItem: BusinessModel): Boolean
-            = oldItem.business == newItem.business
+            = oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: BusinessModel, newItem: BusinessModel): Boolean
             = oldItem == newItem

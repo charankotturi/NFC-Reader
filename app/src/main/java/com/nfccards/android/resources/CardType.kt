@@ -5,14 +5,20 @@ import com.nfccards.android.model.BusinessModel
 enum class CardType {
     BUSINESS_NORMAL,
     BUSINESS_LOGO,
-    BUSINESS_BACKGROUND;
+    BUSINESS_BACKGROUND,
+    SPOTIFY,
+    YOUTUBE,
+    API;
 
     companion object {
-        fun getCardModel(cardType: CardType) : Class<*> {
+        fun getCardModel(cardType: CardType) : Int {
             return when(cardType){
-                BUSINESS_NORMAL -> BusinessModel::class.java
-                BUSINESS_LOGO -> BusinessModel::class.java
-                BUSINESS_BACKGROUND -> BusinessModel::class.java
+                BUSINESS_NORMAL -> 1001
+                BUSINESS_LOGO -> 1002
+                BUSINESS_BACKGROUND -> 1003
+                SPOTIFY -> 1004
+                YOUTUBE -> 1005
+                API -> 1006
             }
         }
     }
