@@ -5,16 +5,15 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 
 class SignInViewModel : ViewModel() {
-
-    private var _signedIn = false
-    val loggedIn get() = _signedIn
-    private var _phoneNumber = 0
+    private var _phoneNumber = ""
     val phoneNumber get() = _phoneNumber
-    var credentials : PhoneAuthCredential? = null
-    var verificationId: String? = null
+    private var _credentials: PhoneAuthCredential? = null
+    val credentials get() = _credentials
+    private var _verificationId: String? = null
+    val verificationId get() = _verificationId
     var resendToken: PhoneAuthProvider.ForceResendingToken? = null
 
-
-    fun setPhoneNumber(phoneNum: Int) { _phoneNumber = phoneNum }
-    fun setLoggedIn(isLoggedIn: Boolean) { _signedIn = isLoggedIn }
+    fun setCredentials(credentials: PhoneAuthCredential) { _credentials = credentials }
+    fun setVerificationId(verificationId: String) { _verificationId = verificationId }
+    fun setPhoneNumber(phoneNum: String) { _phoneNumber = phoneNum }
 }

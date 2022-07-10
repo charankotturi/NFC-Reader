@@ -1,25 +1,29 @@
 package com.nfccards.android.ui.onboarding
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.Editable
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import com.nfccards.android.MainActivity
 import com.nfccards.android.R
 import com.nfccards.android.databinding.FragmentUserNameBinding
 import com.nfccards.android.model.User
 import com.nfccards.android.resources.Resource
-import java.lang.ClassCastException
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.serializer
+
 
 class UserName : Fragment() {
 
@@ -79,8 +83,7 @@ class UserName : Fragment() {
             when(it){
                 is Resource.Error -> {
                     Firebase.auth.signOut()
-                    findNavController().navigate(R.id.action_userName_to_phoneNumber)
-                    Toast.makeText(requireActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Loading -> {
 
@@ -89,7 +92,12 @@ class UserName : Fragment() {
                     username = it.data?.username ?: ""
                     binding.etUserName.setText(it.data?.username)
 
+                    val sharedPreferences: SharedPreferences =
+                        activity?.getSharedPreferences("MY_DB", MODE_PRIVATE)!!
 
+                    val myEdit = sharedPreferences.edit()
+                    myEdit.putString("current_user", Gson().toJson(it.data))
+                    myEdit.commit()
                 }
             }
         }
@@ -124,5 +132,9 @@ class UserName : Fragment() {
         }catch (e: ClassCastException){e.printStackTrace()}
 
         super.onStart()
+    }
+
+    fun toast(message: String){
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
     }
 }

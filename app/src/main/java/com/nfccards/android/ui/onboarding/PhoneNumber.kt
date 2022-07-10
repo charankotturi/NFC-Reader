@@ -56,7 +56,7 @@ class PhoneNumber : Fragment() {
                     // 2 - Auto-retrieval. On some devices Google Play services can automatically
                     //     detect the incoming verification SMS and perform verification without
                     //     user action.
-                    (activity as SignInActivity).getSignInViewModel().credentials = credential
+                    (activity as SignInActivity).getSignInViewModel().setCredentials(credential)
                     findNavController().navigate(R.id.action_phoneNumber_to_userName)
                 }
 
@@ -86,12 +86,12 @@ class PhoneNumber : Fragment() {
                     // The SMS verification code has been sent to the provided phone number, we
                     // now need to ask the user to enter the code and then construct a credential
                     // by combining the code with a verification ID.
-                    findNavController().navigate(R.id.action_phoneNumber_to_otp)
-
                     // Save verification ID and resending token so we can use them later
-                    (activity as SignInActivity).getSignInViewModel().setPhoneNumber(binding.etPhoneNumber.text.toString() as Int)
-                    (activity as SignInActivity).getSignInViewModel().verificationId = verificationId
+                    (activity as SignInActivity).getSignInViewModel().setPhoneNumber(binding.etPhoneNumber.text.toString())
+                    (activity as SignInActivity).getSignInViewModel().setVerificationId(verificationId)
                     (activity as SignInActivity).getSignInViewModel().resendToken = token
+
+                    findNavController().navigate(R.id.action_phoneNumber_to_otp)
 //                    storedVerificationId = verificationId
 //                    resendToken = token
                 }

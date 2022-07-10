@@ -11,9 +11,13 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.nfccards.android.R
 import com.nfccards.android.databinding.FragmentOtpBinding
 import java.lang.ClassCastException
+import java.lang.Exception
 
 class Otp : Fragment() {
 
@@ -25,12 +29,29 @@ class Otp : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_otp, container, false )
-
-        binding.btnSend.setOnClickListener {
-
+        auth = Firebase.auth
+        (activity as SignInActivity).getSignInViewModel().credentials?.let {
+            signInWithPhoneAuthCredential(
+                it
+            )
         }
 
-        binding.txtPhoneNumber.text = (activity as SignInActivity).getSignInViewModel().phoneNumber.toString()
+        binding.btnSend.setOnClickListener {
+            try {
+                val credential = PhoneAuthProvider.getCredential(
+                    (activity as SignInActivity).getSignInViewModel().verificationId!!
+                    , binding.otpView.otp!!
+                )
+
+                signInWithPhoneAuthCredential(credential)
+            }catch (e: Exception){
+                e.printStackTrace()
+                toast("something went wrong, try again!")
+                findNavController().navigate(R.id.action_otp_to_phoneNumber)
+            }
+        }
+
+        binding.txtPhoneNumber.text = "+91 ${(activity as SignInActivity).getSignInViewModel().phoneNumber}"
 
         binding.imgBack.setOnClickListener {
             findNavController().navigate(R.id.action_otp_to_phoneNumber)

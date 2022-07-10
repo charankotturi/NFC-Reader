@@ -1,6 +1,9 @@
 package com.nfccards.android.resources
 
+import com.nfccards.android.model.BusinessLogoModel
 import com.nfccards.android.model.BusinessModel
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 class Utils {
     companion object {
@@ -21,6 +24,10 @@ class Utils {
                 webSite = dataArray[3]
             )
             return model
+        }
+
+        fun getBusinessLogoModel(data: String) : BusinessLogoModel {
+            return Json.decodeFromString(data)
         }
     }
 }

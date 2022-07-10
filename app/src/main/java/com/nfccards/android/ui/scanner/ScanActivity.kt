@@ -1,5 +1,6 @@
 package com.nfccards.android.ui.scanner
 
+import android.R.attr
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
@@ -15,8 +16,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.nfccards.android.R
 import com.nfccards.android.databinding.ActivityScanBinding
+import com.nfccards.android.model.BusinessModel
+import com.nfccards.android.resources.CardType
 import com.nfccards.android.ui.viewer.BusinessCardViewActivity
 import com.nfccards.android.ui.writer.MyCardsActivity
 import java.util.*
@@ -101,6 +106,8 @@ class ScanActivity : AppCompatActivity() {
         if (viewModel.isReadingCard){
             if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
                 processIntent(intent)
+            } else if (NfcAdapter.ACTION_TAG_DISCOVERED == intent.action){
+                processMobileIntent(intent)
             }
         }
     }
@@ -122,16 +129,14 @@ class ScanActivity : AppCompatActivity() {
         val tag: Tag? = intent?.getParcelableExtra(NfcAdapter.EXTRA_TAG)
         setIntent(intent)
 
-//        tag?.let { TagData.detectTagData(it) }
-
         if (tag != null) {
             tag.techList.forEach {
-                Log.i(TAG, "onNewIntent: Yay!")
+                Log.i(TAG, "onNewIntent: Yay${it}!")
             }
 
-            val nfc = NfcA.get(tag)
-
             try {
+                IsoDep.get(tag).hiLayerResponse.size
+
                 if (!viewModel.isReadingCard){
                     writeTag(tag, NdefMessage(
                         arrayOf(
@@ -140,7 +145,14 @@ class ScanActivity : AppCompatActivity() {
                     ))
                 }
             }catch (e: Exception){
-                Toast.makeText(this@ScanActivity, "Something went wrong try again!", Toast.LENGTH_SHORT).show()
+                try {
+                    if (!viewModel.isReadingCard){
+                        writeMobileTag(tag, viewModel.viewData.toByteArray())
+                    }
+                }catch (e: Exception){
+                    Toast.makeText(this@ScanActivity, "Something went wrong try again!", Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
+                }
                 e.printStackTrace()
             }
 
@@ -168,6 +180,41 @@ class ScanActivity : AppCompatActivity() {
         }
     }
 
+    private fun processMobileIntent(intent: Intent) {
+        val tag: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
+
+        val firestore = Firebase.firestore
+
+        firestore.collection("post")
+            .document(tag?.id.toString())
+            .get()
+            .addOnSuccessListener { doc ->
+                if (doc.exists()){
+                    when(doc["type"] as CardType){
+                        CardType.BUSINESS_NORMAL -> {
+                            val newIntent = Intent(this@ScanActivity, BusinessCardViewActivity::class.java)
+                            val model = BusinessModel(
+                                name = doc["name"] as String,
+                                business = doc["businessName"] as String,
+                                phoneNum = doc["phoneNum"] as String,
+                                webSite = doc["webSite"] as String,
+                            )
+                            newIntent.putExtra("data", "${model.name},${model.business},${model.phoneNum},${model.webSite}")
+                            startActivity(newIntent)
+                        }
+                        CardType.BUSINESS_LOGO -> {}
+                        CardType.BUSINESS_BACKGROUND -> {
+
+                        }
+                    }
+                } else{
+                    Toast.makeText(this, "card doesn't exit!", Toast.LENGTH_SHORT).show()
+                }
+            }.addOnFailureListener {
+                Toast.makeText(this, "something went wrong!", Toast.LENGTH_SHORT).show()
+            }
+    }
+
     private fun writeTag(tag: Tag?, message: NdefMessage?) {
         if (tag != null) {
             try {
@@ -191,6 +238,27 @@ class ScanActivity : AppCompatActivity() {
                     ndefTag.close()
                     finish()
                 }
+            } catch (e: Exception) {
+                Toast.makeText(this, "Please try again!", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun writeMobileTag(tag: Tag?, message: ByteArray) {
+        if (tag != null) {
+            try {
+                val iosDep = IsoDep.get(tag)
+
+                if (!iosDep.isConnected) {
+                    iosDep.connect()
+                    iosDep.timeout = 10000
+                }
+
+                Log.i(TAG, "writeMobileTag: ${iosDep.transceive(message)}")
+
+                iosDep.close()
+                finish()
             } catch (e: Exception) {
                 Toast.makeText(this, "Please try again!", Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
