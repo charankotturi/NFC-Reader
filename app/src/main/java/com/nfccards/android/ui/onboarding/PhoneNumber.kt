@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -20,12 +21,14 @@ import com.google.firebase.ktx.Firebase
 import com.nfccards.android.MainActivity
 import com.nfccards.android.R
 import com.nfccards.android.databinding.FragmentPhoneNumberBinding
+import com.nfccards.android.resources.Resource
 import java.lang.ClassCastException
 import java.util.concurrent.TimeUnit
 
 class PhoneNumber : Fragment() {
 
     private lateinit var binding: FragmentPhoneNumberBinding
+    private var loading = MutableLiveData<Resource<Int>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +42,27 @@ class PhoneNumber : Fragment() {
             activity?.finish()
         }
 
+        loading.observe(viewLifecycleOwner) {
+            when(it){
+                is Resource.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+                is Resource.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+
         binding.btnSend.setOnClickListener {
+            loading.value = Resource.Loading()
+
             binding.etPhoneNumber.text.toString().length.let {
                 if (it < 10){
                     toast("Enter a valid number!")
+                    loading.value = Resource.Error(message = "")
                     return@setOnClickListener
                 }
             }
@@ -56,6 +76,7 @@ class PhoneNumber : Fragment() {
                     // 2 - Auto-retrieval. On some devices Google Play services can automatically
                     //     detect the incoming verification SMS and perform verification without
                     //     user action.
+                    loading.value = Resource.Error(message = "")
                     (activity as SignInActivity).getSignInViewModel().setCredentials(credential)
                     findNavController().navigate(R.id.action_phoneNumber_to_userName)
                 }
@@ -63,7 +84,7 @@ class PhoneNumber : Fragment() {
                 override fun onVerificationFailed(e: FirebaseException) {
                     // This callback is invoked in an invalid request for verification is made,
                     // for instance if the the phone number format is not valid.
-
+                    loading.value = Resource.Error(message = "")
                     when (e) {
                         is FirebaseAuthInvalidCredentialsException -> {
                             // Invalid request
@@ -83,6 +104,7 @@ class PhoneNumber : Fragment() {
                     verificationId: String,
                     token: PhoneAuthProvider.ForceResendingToken
                 ) {
+                    loading.value = Resource.Error(message = "")
                     // The SMS verification code has been sent to the provided phone number, we
                     // now need to ask the user to enter the code and then construct a credential
                     // by combining the code with a verification ID.

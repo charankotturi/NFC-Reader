@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BusinessModel(
-    val id: String? = null,
+    override val id: String? = null,
     val name: String,
     val business: String,
     val phoneNum: String,

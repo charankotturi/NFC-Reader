@@ -12,6 +12,15 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent">
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/progressBar"
+            android:elevation="10dp"
+            android:visibility="gone"
+            />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView"
             android:layout_width="match_parent"
@@ -34,12 +43,13 @@
                     android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@+id/btnSend"
                     android:hint="User Name"
-                    android:background="#0003DAC5">
+                    app:boxStrokeWidth="0dp"
+                    android:background="@android:color/transparent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#0003DAC5"
+                        android:background="@android:color/transparent"
                         android:id="@+id/etUserName"
                         android:theme="@style/Widget.Material3.TextInputEditText.FilledBox" />
 

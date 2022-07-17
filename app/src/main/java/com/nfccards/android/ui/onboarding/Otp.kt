@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -16,6 +17,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nfccards.android.R
 import com.nfccards.android.databinding.FragmentOtpBinding
+import com.nfccards.android.resources.Resource
 import java.lang.ClassCastException
 import java.lang.Exception
 
@@ -23,6 +25,7 @@ class Otp : Fragment() {
 
     private lateinit var binding: FragmentOtpBinding
     private lateinit var auth: FirebaseAuth
+    private var loading = MutableLiveData<Resource<Int>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +39,23 @@ class Otp : Fragment() {
             )
         }
 
+        loading.observe(viewLifecycleOwner) {
+            when(it){
+                is Resource.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+                is Resource.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+
         binding.btnSend.setOnClickListener {
+            loading.value = Resource.Loading()
+
             try {
                 val credential = PhoneAuthProvider.getCredential(
                     (activity as SignInActivity).getSignInViewModel().verificationId!!
@@ -46,8 +65,8 @@ class Otp : Fragment() {
                 signInWithPhoneAuthCredential(credential)
             }catch (e: Exception){
                 e.printStackTrace()
+                loading.value = Resource.Error(message = "")
                 toast("something went wrong, try again!")
-                findNavController().navigate(R.id.action_otp_to_phoneNumber)
             }
         }
 
@@ -77,6 +96,7 @@ class Otp : Fragment() {
                     findNavController().navigate(R.id.action_otp_to_userName)
                 } else {
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                        loading.value = Resource.Error(message = "")
                         toast("verification code invalid!")
                     }
                 }

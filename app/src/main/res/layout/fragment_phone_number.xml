@@ -12,6 +12,15 @@
         android:background="@android:color/transparent"
         android:layout_height="wrap_content">
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/progressBar"
+            android:elevation="10dp"
+            android:visibility="gone"
+            />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView"
             android:layout_width="match_parent"
@@ -35,6 +44,7 @@
                     android:layout_toStartOf="@+id/btnSend"
                     android:hint="Phone Number"
                     app:prefixText="+91"
+                    app:boxStrokeWidth="0dp"
                     android:maxLength="10"
                     android:background="#0003DAC5">
 

@@ -1,21 +1,23 @@
 package com.nfccards.android.ui.phone_cards
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
@@ -27,6 +29,7 @@ import com.nfccards.android.databinding.RvPhoneCardBinding
 import com.nfccards.android.model.BusinessLogoModel
 import com.nfccards.android.model.BusinessModel
 import com.nfccards.android.model.CardTypeInterface
+import com.nfccards.android.model.User
 import com.nfccards.android.resources.CardType
 import com.nfccards.android.ui.viewer.BusinessCardLogoActivity
 import com.nfccards.android.ui.viewer.SingleLinkTypes
@@ -43,6 +46,17 @@ class PhoneCardsAdapter(
         @SuppressLint("ResourceType")
         fun bind(position: Int) {
             val item = list[position]
+            val db = Firebase.firestore
+            val sharedPreferences: SharedPreferences = mContext.getSharedPreferences("MY_DB",
+                AppCompatActivity.MODE_PRIVATE
+            )!!
+            val currentUserJson = sharedPreferences.getString("current_user", "")
+
+            if (currentUserJson != ""){
+                item.id?.let {
+                }
+            }
+
             when(item.type){
                 CardType.BUSINESS_NORMAL -> {
                     binding.card.viewStub?.let {
@@ -54,8 +68,7 @@ class PhoneCardsAdapter(
                             Toast.makeText(mContext, "Wait Bitch!", Toast.LENGTH_SHORT).show()
                         }
 
-                        val active = (item as BusinessModel).id == activeCardId
-                        binding.txtDefaultSharing.isVisible = active
+                        val activeItem = (item as BusinessModel)
                         binding.btnMakeDefault.setOnClickListener {
 
                         }
@@ -64,7 +77,6 @@ class PhoneCardsAdapter(
                 CardType.BUSINESS_LOGO -> {
                     binding.card.viewStub?.let {
                         it.layoutResource = R.layout.card_business_logo
-                        val cardBinding = CardBusinessLogoBinding.inflate(it.layoutInflater)
                         it.inflate()
 
                         binding.txtTitle.text = "Mvp Business Card"
@@ -75,14 +87,58 @@ class PhoneCardsAdapter(
                             mContext.startActivity(intent)
                         }
 
-                        val active = (item as BusinessModel).id == activeCardId
-                        binding.txtDefaultSharing.isVisible = active
-                        binding.btnMakeDefault.isVisible = !active
-                        binding.btnMakeDefault.setOnClickListener {
-                            val db = Firebase.firestore
+                        val activeItem = (item as BusinessLogoModel)
+                        it.findViewById<EditText>(R.id.txtBusinessName).setText(activeItem.business)
+                        it.findViewById<EditText>(R.id.txtName).setText(activeItem.name)
+                        it.findViewById<EditText>(R.id.txtPosition).setText(activeItem.position)
 
-                            db.collection("user")
-                                
+                        if (currentUserJson != "") {
+                            val user = Gson().fromJson(currentUserJson, User::class.java)
+
+                            binding.txtDefaultSharing.isVisible = item.id == user.activeCardId
+                        }
+
+                        binding.btnMakeDefault.setOnClickListener {
+                            if (currentUserJson != ""){
+                                val user = Gson().fromJson(currentUserJson, User::class.java)
+
+                                item.id?.let{
+                                    user.activeCardId = item.id
+                                    val edit = sharedPreferences.edit()
+                                    edit.apply {
+                                        this.putString("current_user", Gson().toJson(user))
+                                    }
+                                    edit.commit()
+
+                                    val userMap = {
+                                        "phoneNum" to user.phoneNum
+                                        "username" to user.username
+                                        "activeCardId" to user.activeCardId
+                                    }
+
+                                    db.collection("user")
+                                        .document(it)
+                                        .get()
+                                        .addOnSuccessListener { doc ->
+                                            if (doc.exists()){
+                                                db.collection("user")
+                                                    .document(it)
+                                                    .set(userMap ,SetOptions.merge())
+                                                    .addOnSuccessListener {
+                                                        Toast.makeText(mContext, "Saved!", Toast.LENGTH_SHORT).show()
+                                                    }
+                                            }else{
+                                                Toast.makeText(mContext, "Make sure the doc exists!", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+
+                                    (mContext as Activity).finish()
+                                    return@setOnClickListener
+                                }
+                                Toast.makeText(mContext, "Edit the card first!", Toast.LENGTH_SHORT).show()
+                            }else{
+                                Toast.makeText(mContext, "Create a user first!", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }

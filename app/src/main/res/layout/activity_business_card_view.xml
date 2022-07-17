@@ -10,6 +10,8 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="20dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="#80A9A9A9"
         tools:context=".ui.viewer.BusinessCardViewActivity">
 
         <ImageView

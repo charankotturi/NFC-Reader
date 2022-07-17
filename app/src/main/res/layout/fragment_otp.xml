@@ -12,6 +12,15 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent">
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/progressBar"
+            android:elevation="10dp"
+            android:visibility="gone"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,6 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="resend"
+                android:visibility="gone"
                 android:id="@+id/txtResend"
                 android:layout_marginVertical="10dp"
                 android:textStyle="bold"
@@ -56,9 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_toStartOf="@+id/btnSend"
-                    android:textColor="@color/black"
                     app:bar_enabled="true"
-                    style="null"
                     app:bar_height="2dp"
                     app:height="40dp"
                     app:length="6"

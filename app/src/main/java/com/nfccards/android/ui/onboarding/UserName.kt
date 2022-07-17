@@ -32,14 +32,31 @@ class UserName : Fragment() {
     private var userExits = false
     private var username = ""
     private var userNameChanged = false
+    private var loading = MutableLiveData<Resource<Int>>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_name, container, false)
+        loading.value = Resource.Loading()
 
         getUser((activity as SignInActivity).getSignInViewModel().phoneNumber)
+
+        loading.observe(viewLifecycleOwner) {
+            when(it){
+                is Resource.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+                is Resource.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
 
         binding.btnSend.setOnClickListener {
             if (binding.etUserName.text.toString().length < 5){
@@ -127,6 +144,8 @@ class UserName : Fragment() {
             .addOnFailureListener { error ->
                 userData.value = Resource.Error(message = error.message.toString())
             }
+
+        loading.value = Resource.Error(message = "")
     }
 
     override fun onStart() {

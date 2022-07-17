@@ -21,7 +21,6 @@ class MyCardsActivity : AppCompatActivity() {
 
         if (data != null) {
             val model = Utils.getBusinessModel(data)
-
             binding.etBname.setText(model.business)
             binding.etName.setText(model.name)
             binding.etWebsite.setText(model.webSite)
@@ -37,22 +36,13 @@ class MyCardsActivity : AppCompatActivity() {
                 toast("enter valid name!")
                 return@setOnClickListener
             }
-            if (binding.etPhoneNumber.text?.isEmpty() == true){
-                toast("enter a phone number!")
-                return@setOnClickListener
-            }
-            if (binding.etWebsite.text?.isEmpty() == true){
-                toast("enter your website!")
-                return@setOnClickListener
-            }
 
             val intent = Intent(this, ScanActivity::class.java)
             intent.putExtra("isReader", false)
             intent.putExtra("data", "${binding.etName.text},${binding.etBname.text},${binding.etPhoneNumber.text},${binding.etWebsite.text}")
             startActivity(intent) }
 
-        binding.imgBack.setOnClickListener {
-            finish() }
+        binding.imgBack.setOnClickListener { finish() }
     }
 
     private fun toast(message: String){

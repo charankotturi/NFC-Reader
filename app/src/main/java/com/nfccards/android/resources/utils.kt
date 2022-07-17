@@ -3,8 +3,7 @@ package com.nfccards.android.resources
 import com.google.gson.Gson
 import com.nfccards.android.model.BusinessLogoModel
 import com.nfccards.android.model.BusinessModel
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
+import java.lang.Exception
 
 class Utils {
     companion object {
@@ -18,14 +17,22 @@ class Utils {
                 return model
             }
             val dataArray = data.split(",")
-            val model = BusinessModel(
-                name = dataArray[0],
-                business = dataArray[1],
-                phoneNum = dataArray[2],
-                webSite = dataArray[3],
-                id = dataArray[4]
-            )
-            return model
+            try {
+                return BusinessModel(
+                    name = dataArray[0],
+                    business = dataArray[1],
+                    phoneNum = dataArray[2],
+                    webSite = dataArray[3],
+                    id = dataArray[4]
+                )
+            } catch (e: Exception) {
+                return BusinessModel(
+                    name = dataArray[0],
+                    business = dataArray[1],
+                    phoneNum = dataArray[2],
+                    webSite = dataArray[3],
+                )
+            }
         }
 
         fun getBusinessLogoModel(data: String) : BusinessLogoModel {

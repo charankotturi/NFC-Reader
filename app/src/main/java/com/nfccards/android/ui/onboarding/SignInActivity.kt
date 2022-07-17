@@ -1,6 +1,7 @@
 package com.nfccards.android.ui.onboarding
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.compose.ui.graphics.Color
@@ -14,6 +15,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.nfccards.android.MainActivity
 import com.nfccards.android.R
 import com.nfccards.android.databinding.ActivitySignInBinding
 import kotlinx.coroutines.coroutineScope
@@ -29,6 +31,11 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
         viewModel = ViewModelProviders.of(this)[SignInViewModel::class.java]
+
+        binding.txtSkip.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
 
         pageNumber.observe(this){ value ->
             when (value) {

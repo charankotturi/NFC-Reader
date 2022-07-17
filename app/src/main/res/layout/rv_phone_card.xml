@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:layout_marginBottom="0dp"
+            android:layout_marginBottom="10dp"
             android:id="@+id/txtTitle"
             android:textStyle="bold"
             android:textSize="16sp"
@@ -68,7 +68,7 @@
                 android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="Make it Default Card"
+                android:text="Use this card"
                 />
 
         </com.google.android.material.card.MaterialCardView>

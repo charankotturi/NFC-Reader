@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class User(
     val phoneNum: String,
     val username: String,
-    val activeCardId: String? = ""
+    var activeCardId: String? = ""
 )
